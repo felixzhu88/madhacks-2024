@@ -12,4 +12,4 @@ docker start sqlserver_container
 Stop SQL server:
 docker stop sqlserver_container
 
-pip install pyodbc pandas
+pip install pyodbc pandas uvicorn fastapi
