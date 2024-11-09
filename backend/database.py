@@ -37,7 +37,7 @@ class TicketDB:
         self.table_ids["TestTable"] = 0
 
     def create_ticket_table(self):
-        query = "CREATE TABLE TicketTable (id INT PRIMARY KEY, name NVARCHAR(50), description NVARCHAR(250), date DATE)"
+        query = "CREATE TABLE TicketTable (id INT PRIMARY KEY, email NVARCHAR(50), name NVARCHAR(50), description NVARCHAR(250), date DATE)"
         with self.conn_lock:
             cursor = self.conn.cursor()
             

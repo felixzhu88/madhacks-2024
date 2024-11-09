@@ -7,6 +7,7 @@ from threading import Lock
 
 class Ticket(BaseModel):
     name: str | None = None
+    email: str | None = None
     desc: str | None = None
     date: str | None = None
 
@@ -30,6 +31,7 @@ async def get_tickets():
 async def add_ticket(ticket: Ticket, response: Response):
     ticket_dict = {}
     ticket_dict["name"] = ticket.name
+    ticket_dict["email"] = ticket.email
     ticket_dict["description"] = ticket.desc
     ticket_dict["date"] = ticket.date
     ret_ticket = db.insert_tuple(ticket_dict, "TicketTable")
