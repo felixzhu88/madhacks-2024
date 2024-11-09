@@ -29,7 +29,7 @@ function TextControls() {
     let formattedDate = formData.date;
     if (formattedDate) {
       const [year, month, day] = formattedDate.split('-');
-      formattedDate = `${year}/${month}/${day}`; // Reformat to yyyy/mm/dd
+      formattedDate = `${year}-${month}-${day}`; // Reformat to yyyy/mm/dd
     }
 
     // Update formData with the formatted date
@@ -43,10 +43,10 @@ function TextControls() {
       try {
         // Send data to API
         const response = await axios.post('http://127.0.0.1:8000/add-ticket', formDataWithFormattedDate);
-
+        console.log(response.data)
         // Handle successful response
         console.log('Response from API:', response.data);
-        alert('Form submitted successfully!');
+        alert(`Form submitted successfully! You are ticket #${response.data.id}`);
       } catch (error) {
         // Handle error
         console.error('Error sending data to API:', error);
