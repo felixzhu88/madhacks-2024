@@ -1,4 +1,5 @@
 Docker Desktop: https://www.docker.com/products/docker-desktop/
+ODBC Driver: https://learn.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver16
 
 Get Docker SQL Server Running:
 docker pull mcr.microsoft.com/mssql/server:2022-latest

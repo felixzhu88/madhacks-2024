@@ -5,6 +5,7 @@ class TicketDB:
     def __init__(self):
         self.conn = None
         self.cursor = None
+        self.table_ids = {}
 
         # Define connection parameters
         server = 'localhost,1433'   # Docker container is exposed on localhost:1433
@@ -33,14 +34,29 @@ class TicketDB:
         if 'conn' in locals():
             self.conn.close()
 
-    def create_table(self):
+    def create_test_table(self):
         query = "CREATE TABLE TestTable (id INT PRIMARY KEY, name NVARCHAR(50))"
+        self.table_ids["TestTable"] = 0
         self.cursor.execute(query)
 
-    def insert_tuple(self, id, name, table_name="TestTable"):
+    def create_ticket_table(self):
+        query = "CREATE TABLE TicketTable (id INT PRIMARY KEY, description NVARCHAR(250), date DATE)"
+        self.table_ids["TicketTable"] = 0
+        self.cursor.execute(query)
+
+    def insert_tuple(self, tup, table_name="TestTable"):
         try:
-            query = f"INSERT INTO {table_name} (id, name) VALUES ({id}, '{name}')"
+            tuple_str = ""
+            key_str = "id"
+            for key, val in tup.items():
+                if type(val) is str:
+                    tuple_str += f"'{val}'" + ", "
+                else:
+                    tuple_str += str(val) + ", "
+                key_str += ", " + key
+            query = f"INSERT INTO {table_name} ({key_str}) VALUES ({self.table_ids[table_name]}, {tuple_str[:-2]})"
             self.cursor.execute(query)
+            self.table_ids[table_name] += 1
         except Exception as e:
             print(f"Error: {e}")
 
@@ -55,14 +71,10 @@ class TicketDB:
 
 test = TicketDB()
 
-test.create_table()
-test.insert_tuple(1, "Aaron")
-test.insert_tuple(2, "Felix")
-test.insert_tuple(3, "Allyssa")
-test.insert_tuple(4, "Jacob")
-query = """SELECT * FROM TestTable t
-            WHERE t.id < 3;
-        """
+test.create_ticket_table()
+test.insert_tuple({"description": "Lilian going to sleep early", "date": "2024-11-9"}, "TicketTable")
+test.insert_tuple({"description": "Felix is on a mac", "date": "2024-11-10"}, "TicketTable")
+query = """SELECT * FROM TicketTable"""
 df = test.load_query_pd(query, True)
 print(df)
 
