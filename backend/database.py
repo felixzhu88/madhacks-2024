@@ -37,7 +37,7 @@ class TicketDB:
         self.table_ids["TestTable"] = 0
 
     def create_ticket_table(self):
-        query = "CREATE TABLE TicketTable (id INT PRIMARY KEY, description NVARCHAR(250), date DATE)"
+        query = "CREATE TABLE TicketTable (id INT PRIMARY KEY, name NVARCHAR(50), description NVARCHAR(250), date DATE)"
         with self.conn_lock:
             cursor = self.conn.cursor()
             
@@ -59,9 +59,12 @@ class TicketDB:
             with self.conn_lock:
                 cursor = self.conn.cursor()
                 cursor.execute(query)
+            tup["id"] = self.table_ids[table_name]
             self.table_ids[table_name] += 1
+            return tup
         except Exception as e:
             print(f"Error: {e}")
+            return -1
 
     def load_query_pd(self, query, show=False):
         with self.conn_lock:
