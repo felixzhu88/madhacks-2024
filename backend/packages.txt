@@ -1,0 +1,2 @@
+Docker Desktop: https://www.docker.com/products/docker-desktop/
+pip install pyodbc pandas
