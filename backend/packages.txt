@@ -1,2 +1,14 @@
 Docker Desktop: https://www.docker.com/products/docker-desktop/
+
+Get Docker SQL Server Running:
+docker pull mcr.microsoft.com/mssql/server:2022-latest
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=YourPassword123" -p 1433:1433 --name sqlserver_container -d mcr.microsoft.com/mssql/server:2022-latest
+OPTIONAL STATUS CHECK: docker ps
+
+Start SQL server:
+docker start sqlserver_container
+
+Stop SQL server:
+docker stop sqlserver_container
+
 pip install pyodbc pandas
