@@ -60,7 +60,6 @@ test.insert_tuple(1, "Aaron")
 test.insert_tuple(2, "Felix")
 test.insert_tuple(3, "Allyssa")
 test.insert_tuple(4, "Jacob")
-test.insert_tuple(5, "Lilian")
 query = """SELECT * FROM TestTable t
             WHERE t.id < 3;
         """
