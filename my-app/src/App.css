@@ -5,26 +5,22 @@
 #AFB1B2 - light gray
 #7F642C - medium dark khaki
  */
- body {
+
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
   background-image: url('./images/background2.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  margin: 0;
-}
-
-.App {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Add this line */
-  justify-content: center;
-  height: 100vh;
-  padding-top: 80px; /* Adjust if necessary */
 }
 
 .jumbotron {
-  margin: 0px;
+  margin-top: 150px;
+  margin-bottom: 0px;
   background-color: #d3d3d3;
   border-radius: 20px;
   opacity: 0.80;
@@ -37,21 +33,40 @@
 }
 
 .navbar-container {
-  position: fixed; /* Makes the navbar fixed at a specific position */
-  top: 40px; /* Adjust the value to control how far from the top */
-  width: 900px; /* Ensures it spans the full width of the viewport */
-  z-index: 1000; /* Keeps it above other content */
-  padding: 5px 10px; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 0 15px; /* Adjust padding as necessary */
+  margin-bottom: 70px;/* Ensure no margin pushing it down */
   display: flex;
-  justify-content: center; /* Aligns the logo and links */
-  align-items: center; /* Centers vertically */
+  justify-content: center;
+  align-items: center;
+  background-color: #d3d3d3;
+  border-bottom: 1px solid #AFB1B2;
 }
+
 
 #navbar {
   background-color: #d3d3d3;
-  border-radius: 15px;
-  opacity: 0.85;
-  width: 100%;
+  width: 90%; /* Controls width relative to viewport */
+  max-width: 1200px; /* Optional max-width for better aesthetics on larger screens */
+  border-radius: 10px; /* Slight border radius for a pleasant curve */
+  opacity: 0.80; /* Slight opacity for a polished look */
+  padding: 5px 15px; /* Reduces padding inside the navbar for a tighter fit */
+  margin: 0; /* Ensures no extra margins around the navbar */
+}
+
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding-top: 0; /* Make sure there is no padding pushing content down */
+  margin-top: 0;
 }
 
 
