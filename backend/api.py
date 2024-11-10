@@ -24,7 +24,7 @@ class Filter(BaseModel):
 class DeletePayload(BaseModel):
     id: int
 
-categories = ["Tech Support", "Finanace/Billing", "General"]
+categories = ["Tech Support", "Finanace/Billing", "Customer Service", "Shipping Problems", "Other"]
 
 app = FastAPI()
 db = TicketDB()
