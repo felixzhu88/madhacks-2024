@@ -18,9 +18,7 @@ mutex = Lock()
 
 # Specify the origins that are allowed to access the API
 origins = [
-    "http://localhost",            # For development
     "http://localhost:3000",       # Example frontend app
-    "https://your-frontend-domain.com",  # Production domain
 ]
 
 # Add CORS middleware with allowed origins, methods, and headers
