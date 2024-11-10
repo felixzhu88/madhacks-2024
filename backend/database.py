@@ -66,9 +66,27 @@ class TicketDB:
             print(f"Error: {e}")
             return -1
 
-    def load_query_pd(self, query, show=False):
+    def load_all_pd(self, show=False):
         with self.conn_lock:
             cursor = self.conn.cursor()
+            cursor.execute("SELECT * FROM TicketTable")
+            # Fetch and print all results
+            if show:
+                for row in cursor.fetchall():
+                    print(row)
+
+            df = pd.read_sql("SELECT * FROM TicketTable", self.conn)
+        return df
+
+    def load_query_pd(self, col, target, table_name="TestTable", show=False):
+        with self.conn_lock:
+            cursor = self.conn.cursor()
+            query = ""
+            if type(target) is str:
+                query = f"SELECT * FROM {table_name} t WHERE t.{col}='{target}'"
+            else:
+                query = f"SELECT * FROM {table_name} t WHERE t.{col}={target}"
+            print(query)
             cursor.execute(query)
             # Fetch and print all results
             if show:
@@ -85,10 +103,11 @@ class TicketDB:
 """
 test = TicketDB()
 test.create_ticket_table()
-test.insert_tuple({"description": "Lilian going to sleep early", "date": "2024-11-9"}, "TicketTable")
-test.insert_tuple({"description": "Felix is on a mac", "date": "2024-11-10"}, "TicketTable")
-query = "SELECT * FROM TicketTable"
-df = test.load_query_pd(query, True)
+test.insert_tuple({"name": "Aaron", "email": "ayuan1114@gmail.com", "description": "Lilian going to sleep early", "date": "2024-11-9"}, "TicketTable")
+test.insert_tuple({"name": "Aaron", "email": "ayuan1114@gmail.com", "description": "Felix is on a mac", "date": "2024-11-10"}, "TicketTable")
+test.insert_tuple({"name": "Jacob", "email": "jacobyhung@gmail.com", "description": "Felix is on a mac", "date": "2024-11-10"}, "TicketTable")
+df = test.load_query_pd("email", "ayuan1114@gmail.com", "TicketTable", True)
+df = test.load_all_pd(True)
 print(df)
 
 test.close_connection()

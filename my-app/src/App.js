@@ -9,6 +9,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Import from react-router-dom
 import TicketsPage from './pages/Tickets/TicketPage'; // Correct relative path
 import SubmitATicketPage from './pages/SubmitATicket/SubmitATicketPage';
+import AdminViewPage from './pages/Tickets/AdminView/AdminViewPage';
+
+//console.log(AdminViewPage);
 
 function NavBar() {
   return (
@@ -62,6 +65,7 @@ function App() {
           <Route path="/" element={<Jumbotron />} />
           <Route path="/tickets" element={<TicketsPage />} />
           <Route path="/submitATicket" element={<SubmitATicketPage />} />
+          <Route path="/adminView" element={<AdminViewPage />} />
         </Routes>
       </div>
     </Router>

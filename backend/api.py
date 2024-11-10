@@ -12,15 +12,17 @@ class Ticket(BaseModel):
     desc: str | None = None
     date: str | None = None
 
+class Filter(BaseModel):
+    col: str | None = None
+    target: str | None = None
+
 app = FastAPI()
 db = TicketDB()
 mutex = Lock()
 
 # Specify the origins that are allowed to access the API
 origins = [
-    "http://localhost",            # For development
     "http://localhost:3000",       # Example frontend app
-    "https://your-frontend-domain.com",  # Production domain
 ]
 
 # Add CORS middleware with allowed origins, methods, and headers
@@ -41,8 +43,8 @@ def hi():
 @app.get("/tickets", status_code=200)
 async def get_tickets():
     query = "SELECT * FROM TicketTable"
-    df = db.load_query_pd(query)
-    return df.to_dict()
+    df = db.load_all_pd(query)
+    return df.to_dict('records')
 
 @app.post("/add-ticket", status_code=200)
 async def add_ticket(ticket: Ticket, response: Response):
@@ -57,6 +59,10 @@ async def add_ticket(ticket: Ticket, response: Response):
         return
     return JSONResponse(content = ret_ticket)
 
+@app.get("/filter-tickets", status_code=200)
+async def filter_tickets(filter: Filter, response: Response):
+    df = db.load_query_pd(filter.col, filter.target, "TicketTable")
+    return df.to_dict('records')
 
 @app.on_event("shutdown")
 def shutdown():
