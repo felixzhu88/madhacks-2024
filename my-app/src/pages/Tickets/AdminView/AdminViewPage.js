@@ -80,7 +80,7 @@ function TicketPage({ filter }) {
 
   // Function to handle ticket deletion
   const handleDelete = (ticketId) => {
-    axios.post('http://127.0.0.1:8000/tickets/', {"id": ticketId})
+    axios.post('http://127.0.0.1:8000/delete-ticket', {"id": ticketId})
       .then(() => {
         // Filter out the deleted ticket from the state
         setTickets(tickets.filter(ticket => ticket.id !== ticketId));
