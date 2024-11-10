@@ -12,7 +12,6 @@ class Ticket(BaseModel):
     desc: str | None = None
     date: str | None = None
     
-
 class Profile(BaseModel):
     email: str
     name: str
@@ -53,21 +52,20 @@ async def create_profile(profile: Profile, response: Response):
 # endpoint to retrieve profile info
 @app.get("/profile/{email}", status_code=200)
 async def get_profile_details(email: str):
-    # Fetch the profile details (for simplicity, assuming we only store tickets)
+    # get profile info
     query = f"SELECT * FROM TicketTable WHERE email = '{email}'"
     tickets_df = db.load_query_pd(query)
     if tickets_df.empty:
         raise HTTPException(status_code=404, detail="Profile not found or no tickets submitted")
 
-    # Convert ticket details to a list of dictionaries
+    # convert ticket details to a list of dictionaries
     tickets = tickets_df.to_dict(orient="records")
     
-    # Return profile and associated tickets
+    # return profile with info
     return {
         "email": email,
         "tickets": tickets
     }
-
 
 @app.get("/", status_code=200)
 def hi():
