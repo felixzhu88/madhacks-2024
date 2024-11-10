@@ -6,6 +6,9 @@ ticket2 = {"name": "Aaron", "email": "ayuan1114@gmail.com", "desc": "Felix is on
 ticket3 = {"name": "Jacob", "email": "jacobyhung@gmail.com", "desc": "Felix is on a why", "date": "2024-11-10"}
 filter = {"col": "email", "target": "ayuan1114@gmail.com"}
 
+response = requests.get(base_url + "/categories")
+print(response.content)
+
 response = requests.post(base_url + "/add-ticket", json=ticket1)
 print(response.content)
 response = requests.post(base_url + "/add-ticket", json=ticket2)
