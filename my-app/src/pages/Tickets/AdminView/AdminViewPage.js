@@ -9,15 +9,19 @@ function TicketPage() {
 
   // Fetch tickets from the API when the component mounts
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/add-ticket')  // Replace with your backend API URL
+    console.log("running")
+    axios.get('http://127.0.0.1:8000/tickets')  // Replace with your backend API URL
       .then((response) => {
+        console.log("hi")
         setTickets(response.data);  // Store tickets data in the state
         setLoading(false);  // Stop loading
       })
       .catch((err) => {
+        console.log("error")
         setError('Failed to fetch tickets');  // Set error if request fails
         setLoading(false);  // Stop loading
       });
+    console.log("done running")
   }, []);  // Empty dependency array ensures the request is made only once when the component mounts
 
   return (
