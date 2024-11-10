@@ -94,6 +94,15 @@ class TicketDB:
             df = pd.read_sql(query, self.conn)
         return df
 
+    def delete_row(self, id, table_name="TestTable"):
+        query = f"DELETE FROM {table_name} WHERE id={id}"
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(query)
+        except Exception as e:
+            print(f"Error: {e}")
+            return -1
+
     def close_connection(self):
         if 'conn' in locals():
             self.conn.close()

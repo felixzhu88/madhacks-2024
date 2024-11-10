@@ -20,6 +20,9 @@ class Filter(BaseModel):
     col: str
     target: str
 
+class DeletePayload(BaseModel):
+    id: int
+
 app = FastAPI()
 db = TicketDB()
 mutex = Lock()
@@ -126,9 +129,12 @@ async def add_ticket(ticket: Ticket, response: Response):
 
 @app.post("/filter-tickets", status_code=200)
 async def filter_tickets(filter: Filter, response: Response):
-    print(filter.col, filter.target)
     df = db.load_query_pd(filter.col, filter.target, "TicketTable")
     return df.to_dict('records')
+
+@app.post("/delete-ticket", status_code=200)
+async def delete_ticket(id: DeletePayload, response: Response):
+    db.delete_row(id.id, "TicketTable")
 
 @app.on_event("shutdown")
 def shutdown():
