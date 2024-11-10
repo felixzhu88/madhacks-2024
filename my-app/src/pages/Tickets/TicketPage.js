@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom'; // Import from react-router-dom
 import AdminViewPage from './AdminView/AdminViewPage';
+import './TicketPage.css';
 
 
 function CornerButton() {
@@ -41,20 +42,16 @@ function CornerButton() {
   return (
     <div>
 
-      {/* Fixed button in the top-right corner */}
-      <Button
-        variant="primary"
-        size="sm"
-        onClick={handleShow}
-        style={{
-          position: 'fixed',
-          top: '10px', // Adjust as needed
-          right: '10px', // Adjust as needed
-          zIndex: 1000, // Ensures the button is above other content
-        }}
-      >
-        Admin Login
-      </Button>
+      Fixed button in the top-right corner
+      <div id="button">
+        <Button
+          variant="primary"
+          size="sm"
+          onClick={handleShow}
+        >
+          Admin Login
+        </Button>
+      </div>
 
        {/* Password Modal */}
        <Modal show={show} onHide={handleClose} centered>
@@ -137,7 +134,7 @@ function TextControls() {
   };
 
   return (
-    <Container SubmitATickerPage="mt-4">
+    <Container SubmitATickerPage="mt-4" id="ticketpagejumbotron">
     <h2>View Your Tickets</h2>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         

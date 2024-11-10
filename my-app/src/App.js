@@ -6,27 +6,27 @@ import Button from 'react-bootstrap/Button';
 import logo from './images/logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Import from react-router-dom
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'; // Import from react-router-dom
 import TicketsPage from './pages/Tickets/TicketPage'; // Correct relative path
 import SubmitATicketPage from './pages/SubmitATicket/SubmitATicketPage';
 import AdminViewPage from './pages/Tickets/AdminView/AdminViewPage';
 
-//console.log(AdminViewPage);
 
 function NavBar() {
+  const location = useLocation(); // Use location to determine the current route
+
   return (
-    <Container className="navbar-container">
-      <Navbar expand="lg" id="navbar">
-      <Container className="LogoName">
+    <Navbar expand="lg" id="navbar" bg="light" className="navbar-container">
+      <Container>
         <Navbar.Brand as={Link} to="/">
-        <img 
-          src={logo} 
-          alt="logo" 
-          width="30"
-          height="30"
-          id="nav-logo"
+          <img 
+            src={logo} 
+            alt="logo" 
+            width="30"
+            height="30"
+            id="nav-logo"
           />
-        Ticketer
+          Ticketer
         </Navbar.Brand> {/* Use 'as={Link}' for React Router */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -35,10 +35,17 @@ function NavBar() {
             <Nav.Link as={Link} to="/tickets">Tickets</Nav.Link>
             <Nav.Link as={Link} to="/submitATicket">Submit a Ticket</Nav.Link>
           </Nav>
+          {/* Conditionally render the Admin Login link when on the /tickets page */}
+          {location.pathname === '/tickets' && (
+            <Nav>
+              <Nav.Link as={Link} to="" className="ms-auto" style={{ cursor: 'pointer' }}>
+                Admin Login
+              </Nav.Link>
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>
-  </Container>
   );
 }
 
@@ -49,7 +56,7 @@ function Jumbotron() {
         <h1>Welcome</h1>
         <p>This is a site made by pookies, <em>for</em> pookies.</p>
         <p>
-          <Button variant="primary">Tickets</Button>
+          <Button variant="primary" as={Link} to="/tickets">Tickets</Button>
         </p>
       </div>
     </Container>
