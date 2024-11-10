@@ -2,15 +2,14 @@ import './App.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
-import background from './images/background.jpg';
 import logo from './images/logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Import from react-router-dom
-import TicketsPage from './pages/Tickets/TicketPage'; // Correct relative path
-import ProfilePage from './pages/Profile/ProfilePage'; // Correct relative path
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; 
+import TicketsPage from './pages/Tickets/TicketPage'; 
+import ProfilePage from './pages/Profile/ProfilePage'; 
+import SubmitTicketPage from './pages/Submit-Ticket/SubmitTicket'; 
 
 function NavBar() {
   return (
@@ -32,11 +31,8 @@ function NavBar() {
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item as={Link} to="/tickets">Tickets</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Submit a Ticket</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Help</NavDropdown.Item>
-            </NavDropdown>
+            <Nav.Link as={Link} to="/submit-ticket">Submit a Ticket</Nav.Link>
+            <Nav.Link as={Link} to="/tickets">Tickets</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -78,6 +74,7 @@ function App() {
           <Route path="/" element={<Jumbotron />} />
           <Route path="/tickets" element={<TicketsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/submit-ticket" element={<SubmitTicketPage />} />
         </Routes>
       </div>
     </Router>
