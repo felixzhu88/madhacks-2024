@@ -30,7 +30,6 @@ function CornerButton() {
     event.preventDefault();
     if (password === correctPassword) {
       navigate('/adminView')
-      //alert('Access Granted!');
       handleClose();
       setPassword(''); // Reset password input
     } else {
@@ -82,53 +81,42 @@ function CornerButton() {
 }
 
 function TextControls() {
-
   const [validated, setValidated] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    date: "",
-    desc: "",
-  });
+  let [formData, setFormData] = useState("");
+
+  const [tickets, setTickets] = useState([]);  // State to store tickets data
+  const [loading, setLoading] = useState(false);  // State to show loading
+  const [error, setError] = useState("");  // State for error handling
 
   // Handle changes for all form fields
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });  // Update the state with the field value
+    const { value } = event.target;
+    setFormData(value);  // Update the state with the field value
+    formData = value;
   };
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
     event.preventDefault();  // Prevent the default form submission
 
-    // Ensure the date format is yyyy/mm/dd
-    let formattedDate = formData.date;
-    if (formattedDate) {
-      const [year, month, day] = formattedDate.split('-');
-      formattedDate = `${year}-${month}-${day}`; // Reformat to yyyy/mm/dd
-    }
-
-    // Update formData with the formatted date
-    const formDataWithFormattedDate = { ...formData, date: formattedDate };
-
     if (form.checkValidity() === false) {
       event.stopPropagation();  // Stop form submission if validation fails
     }
-    else {
-      console.log("Form Submitted:", formDataWithFormattedDate);  // Log form data
-      try {
-        // Send data to API
-        const response = await axios.post('http://127.0.0.1:8000/add-ticket', formDataWithFormattedDate);
-        console.log(response.data)
-        // Handle successful response
-        console.log('Response from API:', response.data);
-        alert(`Form submitted successfully! You are ticket #${response.data.id}`);
-      } catch (error) {
-        // Handle error
-        console.error('Error sending data to API:', error);
-        alert('There was an error submitting your form. Please try again.');
-      }
-    }
+
+    const filter = {'col': 'email', 'target': formData};  // Assuming email is the filter criteria
+
+    setLoading(true);  // Set loading state
+
+    // Make API request to fetch tickets using the email filter
+    await axios.post('http://localhost:8000/filter-tickets', filter, {headers: {'Content-Type': 'application/json'}})
+      .then(response => {
+        setTickets(response.data);  // Store tickets data in the state
+        setLoading(false);  // Stop loading
+      })
+      .catch(error => {
+        setError('Failed to fetch tickets');  // Set error if request fails
+        setLoading(false);  // Stop loading
+      });
 
     setValidated(true);  // Set the form as validated
   };
@@ -145,7 +133,6 @@ function TextControls() {
             required
             type="email"
             placeholder="name@example.com"
-            name="email"
             value={formData.email}
             onChange={handleChange}  // Add onChange to update state
           />
@@ -158,20 +145,53 @@ function TextControls() {
           Submit
         </Button>
       </Form>
+
+      {/* Loading Spinner */}
+      {loading && (
+        <div className="d-flex justify-content-center mt-4">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      )}
+
+      {/* Error Message */}
+      {error && (
+        <div className="alert alert-danger mt-3" role="alert">
+          {error}
+        </div>
+      )}
+
+      {/* Display Tickets */}
+      <div className="mt-4">
+        {tickets.length > 0 ? (
+          <div>
+            <h3>Your Tickets</h3>
+            <ul>
+              {tickets.map((ticket, index) => (
+                <li key={index}>
+                  <h5>{ticket.title}</h5>
+                  <p>{ticket.description}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p>No tickets available.</p>
+        )}
+      </div>
     </Container>
   );
 }
 
 function App() {
-    return (
-      <div className="App">
-        <CornerButton />
-        <TextControls />
-        <Routes>
-          <Route path="/adminView" element={<AdminViewPage />} />
-        </Routes>
-      </div>
-    );
-  }
-  
-  export default App;
+  return (
+    <div className="App">
+      <CornerButton />
+      <TextControls />
+      <Routes>
+        <Route path="/adminView" element={<AdminViewPage />} />
+      </Routes>
+    </div>
+  );
+}
+
+export default App;
