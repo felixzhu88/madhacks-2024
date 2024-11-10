@@ -103,7 +103,6 @@ async def add_ticket(ticket: Ticket, response: Response):
         "date": ticket.date,
         "category": category,
     }
-    print(ticket_dict)
     ret_ticket = db.insert_tuple(ticket_dict, "TicketTable")
     if ret_ticket == -1:
         response.status_code = 400

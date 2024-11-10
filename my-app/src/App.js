@@ -44,9 +44,8 @@ function Jumbotron() {
     <Container className="jumbotron">
       <div id="jumbotron-text">
         <h1>Welcome</h1>
-        <p>Submit a ticket here!</p>
+        <p>Submit a ticket on this site!</p>
         <p>
-          <Button variant="primary">Tickets</Button>
         </p>
       </div>
     </Container>
