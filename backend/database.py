@@ -37,16 +37,14 @@ class TicketDB:
         self.table_ids["TestTable"] = 0
 
     def create_ticket_table(self):
-        query = "CREATE TABLE TicketTable (id INT PRIMARY KEY, email NVARCHAR(50), name NVARCHAR(50), description NVARCHAR(250), date DATE)"
+        query = "CREATE TABLE TicketTable (id INT PRIMARY KEY, email NVARCHAR(50), name NVARCHAR(50), description NVARCHAR(250), category NVARCHAR(50), date DATE)"
         with self.conn_lock:
             cursor = self.conn.cursor()
-            
             cursor.execute(query)
         self.table_ids["TicketTable"] = 0
 
     def insert_tuple(self, tup, table_name="TestTable"):
         try:
-            
             tuple_str = ""
             key_str = "id"
             for key, val in tup.items():
@@ -103,9 +101,9 @@ class TicketDB:
 """
 test = TicketDB()
 test.create_ticket_table()
-test.insert_tuple({"name": "Aaron", "email": "ayuan1114@gmail.com", "description": "Lilian going to sleep early", "date": "2024-11-9"}, "TicketTable")
-test.insert_tuple({"name": "Aaron", "email": "ayuan1114@gmail.com", "description": "Felix is on a mac", "date": "2024-11-10"}, "TicketTable")
-test.insert_tuple({"name": "Jacob", "email": "jacobyhung@gmail.com", "description": "Felix is on a mac", "date": "2024-11-10"}, "TicketTable")
+test.insert_tuple({"name": "Aaron", "email": "ayuan1114@gmail.com", "description": "Lilian going to sleep early", "category": "hi", "date": "2024-11-9"}, "TicketTable")
+test.insert_tuple({"name": "Aaron", "email": "ayuan1114@gmail.com", "description": "Felix is on a mac", "category": "hi", "date": "2024-11-10"}, "TicketTable")
+test.insert_tuple({"name": "Jacob", "email": "jacobyhung@gmail.com", "description": "Felix is on a mac", "category": "hi", "date": "2024-11-10"}, "TicketTable")
 df = test.load_query_pd("email", "ayuan1114@gmail.com", "TicketTable", True)
 df = test.load_all_pd(True)
 print(df)
