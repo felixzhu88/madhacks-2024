@@ -1,8 +1,48 @@
-.App {
-  text-align: center;
+/* Colors:
+#F1AB1D - yellow
+#203539 - dark teal
+#2C97B9 - aqua
+#AFB1B2 - light gray
+#7F642C - medium dark khaki
+ */
+ body {
+  background-image: url('./images/background2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
 }
 
-.App-logo {
+ .App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  height: 100vh; /* Set full viewport height */
+}
+
+.jumbotron {
+  margin: auto;
+  background-color: #d3d3d3;
+  border-radius: 20px;
+  opacity: 0.80;
+}
+
+#jumbotron-text {
+  padding: 20vh;
+}
+
+.navbar-container {
+  background-color: #d3d3d3;
+  margin-top: 4vh;
+  border-radius: 15px;
+  opacity: 0.85;
+  padding: 1px 10px; /* Add padding for consistency */
+}
+
+
+
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -35,4 +75,9 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+#nav-logo {
+  margin-right: 5px;
+  margin-bottom: 2.5px;
 }
