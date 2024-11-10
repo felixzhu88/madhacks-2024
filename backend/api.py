@@ -5,6 +5,7 @@ from pydantic import BaseModel
 import pandas as pd
 from database import TicketDB
 from threading import Lock
+from classifier import TicketClassifier
 
 class Ticket(BaseModel):
     name: str | None = None
@@ -23,18 +24,14 @@ class Filter(BaseModel):
 class DeletePayload(BaseModel):
     id: int
 
+categories = ["Tech Support", "Finanace/Billing", "General"]
+
 app = FastAPI()
 db = TicketDB()
 mutex = Lock()
+tick_class = TicketClassifier(categories)
 
 app.router.redirect_slashes = False
-
-# keywords to filter tickets by
-cat_keywords = {
-    "Tech Support": ["login", "website", "screen", "error", "button", "problem", "issue"],
-    "Finance/Billing": ["payment", "pay", "charge", "invoice", "billing"],
-    "General": ["inquiry", "why", "information", "info"]
-}
 
 # Specify the origins that are allowed to access the API
 origins = [
@@ -52,23 +49,9 @@ app.add_middleware(
 
 db.create_ticket_table()
 
-# filter keywords
-def cat_tickets(description: str) -> str:
-    for category, keywords in cat_keywords.items():
-        # if keyword matches, return the team responsible for this ticket
-        if any(keyword in description for keyword in keywords):
-            return category
-    return "Misc"
-
 # endpoint to get categories
-@app.post("/get-category", status_code=200)
-async def get_category(self):
-    query = f"SELECT DISTINCT category FROM CategoryTable"
-    categories = []
-    
-    df = self.load_query_pd(query)
-    categories = df['category'].tolist()
-
+@app.get("/categories", status_code=200)
+async def get_category():
     return categories
 
 # endpoint to create profiles
@@ -112,7 +95,7 @@ async def get_tickets():
 @app.post("/add-ticket", status_code=200)
 async def add_ticket(ticket: Ticket, response: Response):
     # filter the ticket based on the keywords in description
-    category = cat_tickets(ticket.desc)
+    category = tick_class.categorize(ticket.desc)
     ticket_dict = {
         "name": ticket.name,
         "email": ticket.email,
