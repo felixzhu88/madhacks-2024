@@ -31,11 +31,8 @@ function NavBar() {
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item as={Link} to="/tickets">Tickets</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/submitATicket">Submit a Ticket</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Help</NavDropdown.Item>
-            </NavDropdown>
+            <Nav.Link as={Link} to="/tickets">Tickets</Nav.Link>
+            <Nav.Link as={Link} to="/submitATicket">Submit a Ticket</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -51,7 +48,6 @@ function Jumbotron() {
         <h1>Welcome</h1>
         <p>This is a site made by pookies, <em>for</em> pookies.</p>
         <p>
-          {/* TODO: link to tickets page */}
           <Button variant="primary">Tickets</Button>
         </p>
       </div>
