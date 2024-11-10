@@ -84,9 +84,7 @@ function CornerButton() {
 
 function TextControls() {
   const [validated, setValidated] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-  });
+  let [formData, setFormData] = useState("");
 
   const [tickets, setTickets] = useState([]);  // State to store tickets data
   const [loading, setLoading] = useState(false);  // State to show loading
@@ -94,8 +92,9 @@ function TextControls() {
 
   // Handle changes for all form fields
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });  // Update the state with the field value
+    const { value } = event.target;
+    setFormData(value);  // Update the state with the field value
+    formData = value;
   };
 
   const handleSubmit = async (event) => {
@@ -106,19 +105,17 @@ function TextControls() {
       event.stopPropagation();  // Stop form submission if validation fails
     }
 
-    console.log(formData);
-
-    const filter = { email: formData.email };  // Assuming email is the filter criteria
+    const filter = {'col': 'email', 'target': formData};  // Assuming email is the filter criteria
 
     setLoading(true);  // Set loading state
 
     // Make API request to fetch tickets using the email filter
-    axios.get('http://127.0.0.1:8000/tickets', { params: filter })
-      .then((response) => {
+    await axios.post('http://localhost:8000/filter-tickets', filter, {headers: {'Content-Type': 'application/json'}})
+      .then(response => {
         setTickets(response.data);  // Store tickets data in the state
         setLoading(false);  // Stop loading
       })
-      .catch((err) => {
+      .catch(error => {
         setError('Failed to fetch tickets');  // Set error if request fails
         setLoading(false);  // Stop loading
       });
@@ -138,7 +135,6 @@ function TextControls() {
             required
             type="email"
             placeholder="name@example.com"
-            name="email"
             value={formData.email}
             onChange={handleChange}  // Add onChange to update state
           />

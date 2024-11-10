@@ -17,12 +17,14 @@ class Profile(BaseModel):
     name: str
 
 class Filter(BaseModel):
-    col: str | None = None
-    target: str | None = None
+    col: str
+    target: str
 
 app = FastAPI()
 db = TicketDB()
 mutex = Lock()
+
+app.router.redirect_slashes = False
 
 # keywords to filter tickets by
 cat_keywords = {
@@ -71,7 +73,7 @@ async def create_profile(profile: Profile, response: Response):
 
 # endpoint to retrieve profile info
 @app.get("/profile/{email}", status_code=200)
-async def get_profile_details(email: str, reponse: Response):
+async def get_profile_details(email: str, response: Response):
     # get profile info
     query = f"SELECT * FROM TicketTable WHERE email = '{email}'"
     tickets_df = db.load_query_pd(query)
@@ -112,8 +114,9 @@ async def add_ticket(ticket: Ticket, response: Response):
         return {"message": "Error inserting entry"}
     return JSONResponse(content = ret_ticket)
 
-@app.get("/filter-tickets", status_code=200)
+@app.post("/filter-tickets", status_code=200)
 async def filter_tickets(filter: Filter, response: Response):
+    print(filter.col, filter.target)
     df = db.load_query_pd(filter.col, filter.target, "TicketTable")
     return df.to_dict('records')
 
