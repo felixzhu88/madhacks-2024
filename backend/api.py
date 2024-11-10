@@ -57,6 +57,16 @@ def cat_tickets(description: str) -> str:
             return category
     return "Misc"
 
+# endpoint to get categories
+@app.post("/get-category", status_code=200)
+async def get_category(self):
+    query = f"SELECT DISTINCT category FROM CategoryTable"
+    categories = []
+    
+    df = self.load_query_pd(query)
+    categories = df['category'].tolist()
+
+    return categories
 
 # endpoint to create profiles
 @app.post("/create-profile", status_code=200)
