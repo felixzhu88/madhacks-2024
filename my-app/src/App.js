@@ -10,6 +10,9 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import TicketsPage from './pages/Tickets/TicketPage'; // Correct relative path
 import ProfilePage from './pages/Profile/ProfilePage'; // Correct relative path
 import SubmitATicketPage from './pages/SubmitATicket/SubmitATicketPage';
+import AdminViewPage from './pages/Tickets/AdminView/AdminViewPage';
+
+//console.log(AdminViewPage);
 
 function NavBar() {
   return (
@@ -65,6 +68,7 @@ function App() {
           <Route path="/tickets" element={<TicketsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/submitATicket" element={<SubmitATicketPage />} />
+          <Route path="/adminView" element={<AdminViewPage />} />
         </Routes>
       </div>
     </Router>
