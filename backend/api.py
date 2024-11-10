@@ -11,6 +11,11 @@ class Ticket(BaseModel):
     email: str | None = None
     desc: str | None = None
     date: str | None = None
+    
+
+class Profile(BaseModel):
+    email: str
+    name: str
 
 app = FastAPI()
 db = TicketDB()
@@ -31,6 +36,38 @@ app.add_middleware(
 )
 
 db.create_ticket_table()
+
+# endpoint to create profiles
+@app.post("/create-profile", status_code=200)
+async def create_profile(profile: Profile, response: Response):
+    # check if profile exists
+    query = f"SELECT * FROM TicketTable WHERE email = '{profile.email}' LIMIT 1"
+    existing_profile = db.load_query_pd(query)
+    if existing_profile.empty:
+        response.status_code = 404
+        return {"message": "Profile not found."}
+    
+    # if profile doesn't exist, create it
+    return JSONResponse(content={"email": profile.email, "name": profile.name})
+
+# endpoint to retrieve profile info
+@app.get("/profile/{email}", status_code=200)
+async def get_profile_details(email: str):
+    # Fetch the profile details (for simplicity, assuming we only store tickets)
+    query = f"SELECT * FROM TicketTable WHERE email = '{email}'"
+    tickets_df = db.load_query_pd(query)
+    if tickets_df.empty:
+        raise HTTPException(status_code=404, detail="Profile not found or no tickets submitted")
+
+    # Convert ticket details to a list of dictionaries
+    tickets = tickets_df.to_dict(orient="records")
+    
+    # Return profile and associated tickets
+    return {
+        "email": email,
+        "tickets": tickets
+    }
+
 
 @app.get("/", status_code=200)
 def hi():
