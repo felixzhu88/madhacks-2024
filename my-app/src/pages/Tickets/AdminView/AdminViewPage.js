@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, ListGroup, ListGroupItem, Spinner, Dropdown } from 'react-bootstrap';
+import { Container, ListGroup, ListGroupItem, Spinner, Dropdown, Button } from 'react-bootstrap';
+import { FaTrash } from 'react-icons/fa'; // Import a trash icon from react-icons
 
 function Drop({ onFilterChange }) {
-  // Capture dropdown selection and notify parent component
   const handleSelect = (eventKey) => {
     onFilterChange(eventKey);
   };
@@ -27,6 +27,7 @@ function Drop({ onFilterChange }) {
         <Dropdown.Item eventKey="tech-support">Tech Support</Dropdown.Item>
         <Dropdown.Item eventKey="finance-billing">Finance/Billing</Dropdown.Item>
         <Dropdown.Item eventKey="general">General</Dropdown.Item>
+        <Dropdown.Item eventKey="misc">Misc</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
   );
@@ -39,48 +40,60 @@ function TicketPage({ filter }) {
 
   // Function to fetch tickets based on the filter
   const fetchTickets = (filter) => {
-    setLoading(true);  // Start loading
-    setError(null);  // Reset error
+    setLoading(true);
+    setError(null);
 
-    let cat = {"col": "category", 'target': ''};
+    let cat = { "col": "category", "target": "" };
 
-    // Adjust API URL based on the filter selection
     if (filter === 'all') {
-      axios.get('http://127.0.0.1:8000/tickets')  // Replace with your backend API URL
-      .then((response) => {
-        setTickets(response.data);  // Store tickets data in the state
-        setLoading(false);  // Stop loading
-      })
-      .catch((err) => {
-        setError('Failed to fetch tickets');  // Set error if request fails
-        setLoading(false);  // Stop loading
-      });
-    }
-    else {
+      axios.get('http://127.0.0.1:8000/tickets')
+        .then((response) => {
+          setTickets(response.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError('Failed to fetch tickets');
+          setLoading(false);
+        });
+    } else {
       if (filter === 'tech-support') {
-        cat = {'col': 'category', 'target': 'Tech Support'};
+        cat = { 'col': 'category', 'target': 'Tech Support' };
       } else if (filter === 'finance-billing') {
-        cat = {'col': 'category', 'target': 'Finance Billing'};;
+        cat = { 'col': 'category', 'target': 'Finance Billing' };
       } else if (filter === 'general') {
-        cat = {'col': 'category', 'target': 'General'};
+        cat = { 'col': 'category', 'target': 'General' };
+      } else if (filter === 'misc') {
+        cat = { 'col': 'category', 'target': 'Misc' };
       }
 
       axios.post('http://localhost:8000/filter-tickets', cat)
         .then((response) => {
-          setTickets(response.data);  // Store tickets data in the state
-          setLoading(false);  // Stop loading
+          setTickets(response.data);
+          setLoading(false);
         })
         .catch((err) => {
-          setError('Failed to fetch tickets');  // Set error if request fails
-          setLoading(false);  // Stop loading
+          setError('Failed to fetch tickets');
+          setLoading(false);
         });
-      }
+    }
+  };
+
+  // Function to handle ticket deletion
+  const handleDelete = (ticketId) => {
+    axios.post('http://127.0.0.1:8000/tickets/', {"id": ticketId})
+      .then(() => {
+        // Filter out the deleted ticket from the state
+        setTickets(tickets.filter(ticket => ticket.id !== ticketId));
+      })
+      .catch(() => {
+        setError('Failed to delete the ticket');
+      });
   };
 
   // Fetch tickets whenever the filter changes
   useEffect(() => {
     fetchTickets(filter);
-  }, [filter]);  // Dependency array includes the filter state
+  }, [filter]);
 
   return (
     <Container>
@@ -102,9 +115,16 @@ function TicketPage({ filter }) {
       <ListGroup>
         {tickets.length > 0 ? (
           tickets.map((ticket) => (
-            <ListGroupItem key={ticket.id}>
-              <h5>{ticket.title}</h5>
-              <p>{ticket.description}</p>
+            <ListGroupItem key={ticket.id} className="d-flex justify-content-between align-items-center">
+              <div>
+                <h3>{ticket.email}</h3>
+                <h5>{ticket.description}</h5>
+                <p>id: {ticket.id}</p>
+              </div>
+              {/* Trash Button */}
+              <Button variant="danger" onClick={() => handleDelete(ticket.id)}>
+                <FaTrash />
+              </Button>
             </ListGroupItem>
           ))
         ) : (
@@ -116,12 +136,12 @@ function TicketPage({ filter }) {
 }
 
 function AdminViewPage() {
-  const [filter, setFilter] = useState('all');  // State for dropdown selection
+  const [filter, setFilter] = useState('all');
 
   return (
     <div className="App">
-      <Drop onFilterChange={setFilter} />  {/* Pass setFilter as a prop */}
-      <TicketPage filter={filter} />  {/* Pass filter state to TicketPage */}
+      <Drop onFilterChange={setFilter} />
+      <TicketPage filter={filter} />
     </div>
   );
 }
