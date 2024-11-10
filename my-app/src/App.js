@@ -2,8 +2,8 @@ import './App.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
+import logo from './images/logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Import from react-router-dom
@@ -13,9 +13,19 @@ import SubmitATicketPage from './pages/SubmitATicket/SubmitATicketPage';
 
 function NavBar() {
   return (
-    <Navbar expand="lg" className="bg-light">
-      <Container>
-        <Navbar.Brand as={Link} to="/">Ticketer</Navbar.Brand> {/* Use 'as={Link}' for React Router */}
+    <Container className="navbar-container">
+      <Navbar expand="lg">
+      <Container className="LogoName">
+        <Navbar.Brand as={Link} to="/">
+        <img 
+          src={logo} 
+          alt="logo" 
+          width="30"
+          height="30"
+          id="nav-logo"
+          />
+        Ticketer
+        </Navbar.Brand> {/* Use 'as={Link}' for React Router */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -30,24 +40,28 @@ function NavBar() {
         </Navbar.Collapse>
       </Container>
     </Navbar>
+  </Container>
   );
 }
 
 function Jumbotron() {
   return (
-    <Container className="p-5 my-4 bg-light rounded">
-      <h1>Welcome pookies.</h1>
-      <p>This is a site made by pookies, <em>for</em> pookies.</p>
-      <p>
-        <Button variant="primary">Learn more</Button>
-      </p>
+    <Container className="jumbotron">
+      <div id="jumbotron-text">
+        <h1>Welcome</h1>
+        <p>This is a site made by pookies, <em>for</em> pookies.</p>
+        <p>
+          {/* TODO: link to tickets page */}
+          <Button variant="primary">Tickets</Button>
+        </p>
+      </div>
     </Container>
   );
 }
 
 function App() {
   return (
-    <Router> {/* Wrap the app with Router */}
+    <Router>
       <div className="App">
         <NavBar />
         <Routes>
