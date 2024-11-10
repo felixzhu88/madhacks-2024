@@ -13,19 +13,23 @@
   margin: 0;
 }
 
- .App {
+.App {
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center vertically */
-  height: 100vh; /* Set full viewport height */
+  align-items: center; /* Add this line */
+  justify-content: center;
+  height: 100vh;
+  padding-top: 80px; /* Adjust if necessary */
 }
 
 .jumbotron {
-  margin: auto;
+  margin: 0px;
   background-color: #d3d3d3;
   border-radius: 20px;
   opacity: 0.80;
+  width: 100%;
+  padding: 5px 10px;
 }
 
 #jumbotron-text {
@@ -33,13 +37,22 @@
 }
 
 .navbar-container {
-  background-color: #d3d3d3;
-  margin-top: 4vh;
-  border-radius: 15px;
-  opacity: 0.85;
-  padding: 1px 10px; /* Add padding for consistency */
+  position: fixed; /* Makes the navbar fixed at a specific position */
+  top: 40px; /* Adjust the value to control how far from the top */
+  width: 900px; /* Ensures it spans the full width of the viewport */
+  z-index: 1000; /* Keeps it above other content */
+  padding: 5px 10px; 
+  display: flex;
+  justify-content: center; /* Aligns the logo and links */
+  align-items: center; /* Centers vertically */
 }
 
+#navbar {
+  background-color: #d3d3d3;
+  border-radius: 15px;
+  opacity: 0.85;
+  width: 100%;
+}
 
 
 /* .App-logo {

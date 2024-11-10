@@ -8,13 +8,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'; // Import from react-router-dom
 import TicketsPage from './pages/Tickets/TicketPage'; // Correct relative path
-import ProfilePage from './pages/Profile/ProfilePage'; // Correct relative path
 import SubmitATicketPage from './pages/SubmitATicket/SubmitATicketPage';
 
 function NavBar() {
   return (
     <Container className="navbar-container">
-      <Navbar expand="lg">
+      <Navbar expand="lg" id="navbar">
       <Container className="LogoName">
         <Navbar.Brand as={Link} to="/">
         <img 
@@ -30,7 +29,6 @@ function NavBar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
             <Nav.Link as={Link} to="/tickets">Tickets</Nav.Link>
             <Nav.Link as={Link} to="/submitATicket">Submit a Ticket</Nav.Link>
           </Nav>
@@ -60,10 +58,9 @@ function App() {
     <Router>
       <div className="App">
         <NavBar />
-        <Routes>
+        <Routes>  
           <Route path="/" element={<Jumbotron />} />
           <Route path="/tickets" element={<TicketsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/submitATicket" element={<SubmitATicketPage />} />
         </Routes>
       </div>
