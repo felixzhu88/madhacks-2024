@@ -3,7 +3,8 @@ import axios from 'axios';
 import { Container, ListGroup, ListGroupItem, Spinner, Dropdown, Button } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa'; // Import a trash icon from react-icons
 
-function Drop({ onFilterChange }) {
+// Modified Drop component to fetch categories from API
+function Drop({ onFilterChange, categories }) {
   const handleSelect = (eventKey) => {
     onFilterChange(eventKey);
   };
@@ -24,19 +25,20 @@ function Drop({ onFilterChange }) {
 
       <Dropdown.Menu>
         <Dropdown.Item eventKey="all">All</Dropdown.Item>
-        <Dropdown.Item eventKey="tech-support">Tech Support</Dropdown.Item>
-        <Dropdown.Item eventKey="finance-billing">Finance/Billing</Dropdown.Item>
-        <Dropdown.Item eventKey="general">General</Dropdown.Item>
-        <Dropdown.Item eventKey="misc">Misc</Dropdown.Item>
+        {categories.map((category) => (
+          <Dropdown.Item key={category} eventKey={category}>
+            {category}
+          </Dropdown.Item>
+        ))}
       </Dropdown.Menu>
     </Dropdown>
   );
 }
 
 function TicketPage({ filter }) {
-  const [tickets, setTickets] = useState([]);  // State to store tickets
-  const [loading, setLoading] = useState(false);  // Loading state
-  const [error, setError] = useState(null);  // Error state
+  const [tickets, setTickets] = useState([]); // State to store tickets
+  const [loading, setLoading] = useState(false); // Loading state
+  const [error, setError] = useState(null); // Error state
 
   // Function to fetch tickets based on the filter
   const fetchTickets = (filter) => {
@@ -46,7 +48,8 @@ function TicketPage({ filter }) {
     let cat = { "col": "category", "target": "" };
 
     if (filter === 'all') {
-      axios.get('http://127.0.0.1:8000/tickets')
+      axios
+        .get('http://127.0.0.1:8000/tickets')
         .then((response) => {
           setTickets(response.data);
           setLoading(false);
@@ -56,17 +59,10 @@ function TicketPage({ filter }) {
           setLoading(false);
         });
     } else {
-      if (filter === 'tech-support') {
-        cat = { 'col': 'category', 'target': 'Tech Support' };
-      } else if (filter === 'finance-billing') {
-        cat = { 'col': 'category', 'target': 'Finance Billing' };
-      } else if (filter === 'general') {
-        cat = { 'col': 'category', 'target': 'General' };
-      } else if (filter === 'misc') {
-        cat = { 'col': 'category', 'target': 'Misc' };
-      }
+      cat = { 'col': 'category', 'target': filter };
 
-      axios.post('http://localhost:8000/filter-tickets', cat)
+      axios
+        .post('http://localhost:8000/filter-tickets', cat)
         .then((response) => {
           setTickets(response.data);
           setLoading(false);
@@ -80,10 +76,10 @@ function TicketPage({ filter }) {
 
   // Function to handle ticket deletion
   const handleDelete = (ticketId) => {
-    axios.post('http://127.0.0.1:8000/tickets/', {"id": ticketId})
+    axios
+      .post('http://127.0.0.1:8000/delete-ticket', { id: ticketId })
       .then(() => {
-        // Filter out the deleted ticket from the state
-        setTickets(tickets.filter(ticket => ticket.id !== ticketId));
+        setTickets(tickets.filter((ticket) => ticket.id !== ticketId));
       })
       .catch(() => {
         setError('Failed to delete the ticket');
@@ -111,7 +107,6 @@ function TicketPage({ filter }) {
 
       <h1 className="my-4">Tickets</h1>
 
-      {/* Render the list of tickets */}
       <ListGroup>
         {tickets.length > 0 ? (
           tickets.map((ticket) => (
@@ -121,7 +116,6 @@ function TicketPage({ filter }) {
                 <h5>{ticket.description}</h5>
                 <p>id: {ticket.id}</p>
               </div>
-              {/* Trash Button */}
               <Button variant="danger" onClick={() => handleDelete(ticket.id)}>
                 <FaTrash />
               </Button>
@@ -137,10 +131,28 @@ function TicketPage({ filter }) {
 
 function AdminViewPage() {
   const [filter, setFilter] = useState('all');
+  const [categories, setCategories] = useState([]); // State to store categories
+
+  // Fetch categories from API
+  const fetchCategories = () => {
+    axios
+      .get('http://127.0.0.1:8000/categories') // Replace with your backend API endpoint for fetching categories
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch(() => {
+        console.error('Failed to fetch categories');
+      });
+  };
+
+  // Fetch categories when the component mounts
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   return (
     <div className="App">
-      <Drop onFilterChange={setFilter} />
+      <Drop onFilterChange={setFilter} categories={categories} />
       <TicketPage filter={filter} />
     </div>
   );
