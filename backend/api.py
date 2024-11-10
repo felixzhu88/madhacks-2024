@@ -20,6 +20,13 @@ app = FastAPI()
 db = TicketDB()
 mutex = Lock()
 
+# keywords to filter tickets by
+cat_keywords = {
+    "Tech Support": ["login", "website", "screen", "error", "button", "problem", "issue"],
+    "Finance/Billing": ["payment", "pay", "charge", "invoice", "billing"],
+    "General": ["inquiry", "why", "information", "info"]
+}
+
 # Specify the origins that are allowed to access the API
 origins = [
     "http://localhost:3000",       # Example frontend app
@@ -35,6 +42,16 @@ app.add_middleware(
 )
 
 db.create_ticket_table()
+
+# filter keywords
+def filter_tickets(description: str) -> str:
+    for category, keywords in cat_keywords.items():
+        # if keyword matches, return the team responsible for this ticket
+        if any(keyword in description for keyword in keywords):
+            return category
+    
+    return "No category"
+
 
 # endpoint to create profiles
 @app.post("/create-profile", status_code=200)
@@ -79,11 +96,16 @@ async def get_tickets():
 
 @app.post("/add-ticket", status_code=200)
 async def add_ticket(ticket: Ticket, response: Response):
-    ticket_dict = {}
-    ticket_dict["name"] = ticket.name
-    ticket_dict["email"] = ticket.email
-    ticket_dict["description"] = ticket.desc
-    ticket_dict["date"] = ticket.date
+    # filter the ticket based on the keywords in description
+    category = filter_tickets(ticket.desc)
+    ticket_dict = {
+        "name": ticket.name,
+        "email": ticket.email,
+        "description": ticket.desc,
+        "date": ticket.date,
+        "category": category
+    }
+    
     ret_ticket = db.insert_tuple(ticket_dict, "TicketTable")
     if ret_ticket == -1:
         response.status_code = 400
