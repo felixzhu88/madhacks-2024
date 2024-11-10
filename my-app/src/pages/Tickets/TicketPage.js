@@ -7,6 +7,7 @@ import axios from "axios";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom'; // Import from react-router-dom
 import AdminViewPage from './AdminView/AdminViewPage';
 import './TicketPage.css';
+import { Spinner } from "react-bootstrap";
 
 
 function CornerButton() {
@@ -40,13 +41,17 @@ function CornerButton() {
 
   return (
     <div>
-
-      Fixed button in the top-right corner
       <div id="button">
         <Button
           variant="primary"
           size="sm"
           onClick={handleShow}
+          style={{
+            position: 'fixed',
+            top: '12px',
+            right: '230px',
+            zIndex: 1000,
+          }}
         >
           Admin Login
         </Button>

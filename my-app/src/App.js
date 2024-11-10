@@ -11,9 +11,7 @@ import TicketsPage from './pages/Tickets/TicketPage'; // Correct relative path
 import SubmitATicketPage from './pages/SubmitATicket/SubmitATicketPage';
 import AdminViewPage from './pages/Tickets/AdminView/AdminViewPage';
 
-
 function NavBar() {
-  const location = useLocation(); // Use location to determine the current route
 
   return (
     <Navbar expand="lg" id="navbar" bg="light" className="navbar-container">
@@ -35,14 +33,6 @@ function NavBar() {
             <Nav.Link as={Link} to="/tickets">Tickets</Nav.Link>
             <Nav.Link as={Link} to="/submitATicket">Submit a Ticket</Nav.Link>
           </Nav>
-          {/* Conditionally render the Admin Login link when on the /tickets page */}
-          {location.pathname === '/tickets' && (
-            <Nav>
-              <Nav.Link as={Link} to="" className="ms-auto" style={{ cursor: 'pointer' }}>
-                Admin Login
-              </Nav.Link>
-            </Nav>
-          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>
@@ -56,7 +46,7 @@ function Jumbotron() {
         <h1>Welcome</h1>
         <p>This is a site made by pookies, <em>for</em> pookies.</p>
         <p>
-          <Button variant="primary" as={Link} to="/tickets">Tickets</Button>
+          <Button variant="primary">Tickets</Button>
         </p>
       </div>
     </Container>
