@@ -1,7 +1,7 @@
 # Ticketer - Automated Customer Complaint System 
 
 ## Project Specifics
-At UW-Madison's premier hackathon, our team created a customer complaint system that automatically organizes and routes the tickets to a team who can take care of the issue at hand. 
+Our team created a customer complaint system that automatically organizes and routes the tickets to a team who can take care of the issue at hand. 
 
 ## Key Features
 Automated Ticket Routing: Streamlines ticket management by categorizing and routing complaints to specific response teams using an NLP transformer (HuggingFace Zero-Shot Classification model)
@@ -10,3 +10,4 @@ Docker Integration: Setup with a Docker-hosted MSSQL database to ensure consiste
 Modern UI: Features a React frontend that allows users to submit complaints and view ticket status. For admins, log into view which tickets each team has received. 
 
 Built by Felix Zhu, Aaron Yuan, Lilian Huang, Jacob Hung
+This is a work in progress! We have many plans for Ticketer in the near future! :D 
