@@ -10,4 +10,5 @@ Docker Integration: Setup with a Docker-hosted MSSQL database to ensure consiste
 Modern UI: Features a React frontend that allows users to submit complaints and view ticket status. For admins, log into view which tickets each team has received. 
 
 Built by Felix Zhu, Aaron Yuan, Lilian Huang, Jacob Hung
-This is a work in progress! We have many plans for Ticketer in the near future! :D 
+
+#### Note: This is a work in progress! We have many plans for Ticketer in the near future! :D 
