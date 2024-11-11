@@ -1,4 +1,4 @@
-#Ticketer - Automated Customer Complaint System 
+# Ticketer - Automated Customer Complaint System 
 
 ## Project Specifics
 At UW-Madison's premier hackathon, our team created a customer complaint system that automatically organizes and routes the tickets to a team who can take care of the issue at hand. 
